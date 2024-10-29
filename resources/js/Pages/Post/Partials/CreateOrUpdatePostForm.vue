@@ -8,11 +8,19 @@ import { useForm, router } from "@inertiajs/vue3";
 import { watch } from "vue";
 import { toast } from "@steveyuowo/vue-hot-toast";
 
-defineProps({});
+const props = defineProps({
+    action: {
+        type: String,
+        default: "create",
+    },
+    post: {
+        type: Object,
+    },
+});
 
 const form = useForm({
-    title: "",
-    content: "",
+    title: props.post?.title ?? "",
+    content: props.post?.content ?? "",
 });
 
 watch(
@@ -20,11 +28,20 @@ watch(
     (isSuccessful) => {
         if (isSuccessful) {
             toast({
-                message: "Post has been created successfully",
+                message:
+                    props.action === "create"
+                        ? "Post has been created successfully"
+                        : "Post has been updated successfully",
                 type: "success",
             });
 
-            router.visit(route("dashboard"));
+            if (props.action === "create") router.visit(route("dashboard"));
+            if (props.action === "update")
+                router.visit(
+                    route("posts.show", {
+                        post: props.post,
+                    })
+                );
         }
     }
 );
@@ -41,7 +58,15 @@ watch(
         </header>
 
         <form
-            @submit.prevent="form.post(route('posts.store'))"
+            @submit.prevent="
+                props.action === 'create'
+                    ? form.post(route('posts.store'))
+                    : form.patch(
+                          route('posts.update', {
+                              post: post,
+                          })
+                      )
+            "
             class="mt-6 space-y-6"
         >
             <div>

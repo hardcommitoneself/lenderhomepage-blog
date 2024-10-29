@@ -15,7 +15,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
+
+        return Inertia::render('Dashboard', [
+            'posts' => $posts,
+        ]);
     }
 
     /**
@@ -53,7 +57,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post->load('user');
+
+        return Inertia::render('Post/Show', [
+            'post'=> $post
+        ]);
     }
 
     /**
@@ -61,7 +69,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $post->load('user');
+
+        return Inertia::render('Post/Edit', [
+            'post'=> $post
+        ]);
     }
 
     /**
@@ -69,7 +81,17 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validatedRequest = $request->validate([
+            'title'=> 'required',
+            'content'=> 'required',
+        ]);
+
+        $post->update([
+            'title' => $validatedRequest['title'],
+            'content'=> $validatedRequest['content'],
+        ]);
+
+        return Redirect::route('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -77,6 +99,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return Redirect::route('dashboard');
     }
 }

@@ -1,15 +1,23 @@
 <script setup>
 import Avatar from "./Avatar.vue";
+import { router } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
     post: {
         type: Object,
     },
 });
+
+const handleClick = () => {
+    router.visit(route("posts.show", { post: props.post }));
+};
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 border rounded-xl bg-white p-4">
+    <div
+        class="flex flex-col gap-4 border rounded-xl bg-white p-4 cursor-pointer transition hover:border-orange-500"
+        @click="handleClick"
+    >
         <!-- image -->
         <img :src="post.image" class="w-[360px] h-[240px] rounded-md" />
 

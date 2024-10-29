@@ -32,8 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', DashboardController::class)->middleware(['verified'])->name('dashboard');
-
+    Route::get('/dashboard', [PostController::class, 'index'])->name('dashboard');
     Route::resource('/posts', PostController::class);
 });
 
