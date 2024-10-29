@@ -7,10 +7,15 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { router, useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
+import { toast } from "@steveyuowo/vue-hot-toast";
+import { watch } from "vue";
 
 const props = defineProps({
     post: {
         type: Object,
+    },
+    isFollowing: {
+        type: Boolean,
     },
 });
 
@@ -20,7 +25,9 @@ const canEdit = computed(() => {
     return props.post.user.id === user.id;
 });
 
-const form = useForm({});
+const deleteForm = useForm({});
+const followForm = useForm({});
+const unFollowForm = useForm({});
 
 const gotoBack = () => {
     router.visit(route("dashboard"));
@@ -29,6 +36,30 @@ const gotoBack = () => {
 const gotoEdit = () => {
     router.visit(route("posts.edit", { post: props.post }));
 };
+
+watch(
+    () => followForm.recentlySuccessful,
+    (isSuccessful) => {
+        if (isSuccessful) {
+            toast({
+                message: "You are following this author",
+                type: "success",
+            });
+        }
+    }
+);
+
+watch(
+    () => unFollowForm.recentlySuccessful,
+    (isSuccessful) => {
+        if (isSuccessful) {
+            toast({
+                message: "You are unfollowing this author",
+                type: "success",
+            });
+        }
+    }
+);
 </script>
 
 <template>
@@ -63,19 +94,56 @@ const gotoEdit = () => {
                             >
                             <form
                                 @submit.prevent="
-                                    form.delete(
+                                    deleteForm.delete(
                                         route('posts.destroy', {
                                             post: post,
                                         })
                                     )
                                 "
                             >
-                                <DangerButton :disabled="form.processing"
+                                <DangerButton :disabled="deleteForm.processing"
                                     >Delete</DangerButton
                                 >
                             </form>
                         </template>
-                        <SecondaryButton v-else>Follow</SecondaryButton>
+
+                        <template v-else>
+                            <template v-if="isFollowing">
+                                <form
+                                    @submit.prevent="
+                                        unFollowForm.post(
+                                            route('users.unfollow', {
+                                                user: post.user,
+                                            })
+                                        )
+                                    "
+                                >
+                                    <SecondaryButton
+                                        type="submit"
+                                        :disabled="unFollowForm.processing"
+                                        >UnFollow</SecondaryButton
+                                    >
+                                </form>
+                            </template>
+
+                            <template v-else>
+                                <form
+                                    @submit.prevent="
+                                        followForm.post(
+                                            route('users.follow', {
+                                                user: post.user,
+                                            })
+                                        )
+                                    "
+                                >
+                                    <SecondaryButton
+                                        type="submit"
+                                        :disabled="followForm.processing"
+                                        >Follow</SecondaryButton
+                                    >
+                                </form>
+                            </template>
+                        </template>
                         <PrimaryButton @click="gotoBack">Back</PrimaryButton>
                     </div>
                 </div>

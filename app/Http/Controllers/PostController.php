@@ -60,7 +60,8 @@ class PostController extends Controller
         $post->load('user');
 
         return Inertia::render('Post/Show', [
-            'post'=> $post
+            'post'=> $post,
+            'isFollowing' => $post->user->isFollowedBy(auth()->user())
         ]);
     }
 

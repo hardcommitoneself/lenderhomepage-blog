@@ -47,4 +47,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    // Who this user is following
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed_id');
+    }
+
+    // Who is following this user
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id');
+    }
+
+    // Check if the given user is a follower
+    public function isFollowedBy(User $user)
+    {
+        return $this->followers()->where('follower_id', $user->id)->exists();
+    }
 }

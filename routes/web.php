@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FollowerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [PostController::class, 'index'])->name('dashboard');
     Route::resource('/posts', PostController::class);
+
+    Route::post('/follow/{user}', [FollowerController::class, 'follow'])->name('users.follow');
+    Route::post('/unfollow/{user}', [FollowerController::class, 'unfollow'])->name('users.unfollow');
 });
 
 require __DIR__.'/auth.php';
