@@ -1,8 +1,6 @@
 ## LenderHomePage Blog App
 
-```
-Welcome to LenderHomePage Blogging Platform, a full-featured web application that enables writers to publish blog posts and readers to follow their favorite authors. Built using Laravel, Vue 3, and Inertia.js, our platform offers a seamless user experience with modern web technologies.
-```
+> Welcome to LenderHomePage Blogging Platform, a full-featured web application that enables writers to publish blog posts and readers to follow their favorite authors. Built using Laravel, Vue 3, and Inertia.js, our platform offers a seamless user experience with modern web technologies.
 
 #### Starter Kit
 
