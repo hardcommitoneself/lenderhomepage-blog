@@ -30,7 +30,7 @@ const allPosts = computed(() => {
     <AuthenticatedLayout>
         <div class="mx-auto max-w-6xl my-4">
             <!-- My posts -->
-            <div class="flex flex-col">
+            <div class="flex flex-col px-4 md:px-0">
                 <div class="flex items-center justify-between">
                     <h3 class="font-medium text-lg text-gray-700 my-2">
                         My Posts
@@ -42,7 +42,7 @@ const allPosts = computed(() => {
                 </div>
 
                 <div v-if="myPosts.length">
-                    <div class="grid grid-cols-3 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <template v-for="post in myPosts" :key="post.id">
                             <BlogCard :post="post" />
                         </template>
@@ -55,13 +55,13 @@ const allPosts = computed(() => {
             </div>
 
             <!-- All the other posts -->
-            <div class="flex flex-col">
+            <div class="flex flex-col px-4 md:px-0">
                 <h3 class="font-medium text-lg text-gray-700 my-2">
                     All Posts
                 </h3>
 
                 <div v-if="allPosts.length">
-                    <div class="grid grid-cols-3 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <template v-for="post in allPosts" :key="post.id">
                             <BlogCard :post="post" />
                         </template>

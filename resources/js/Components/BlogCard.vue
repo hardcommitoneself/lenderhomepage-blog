@@ -19,7 +19,7 @@ const handleClick = () => {
         @click="handleClick"
     >
         <!-- image -->
-        <img :src="post.image" class="w-[360px] h-[240px] rounded-md" />
+        <img :src="post.image" class="md:w-[360px] h-[240px] rounded-md" />
 
         <!-- content -->
         <div class="flex flex-col gap-4 p-2">

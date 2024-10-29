@@ -65,9 +65,11 @@ watch(
 <template>
     <AuthenticatedLayout>
         <div class="mx-auto max-w-4xl my-4">
-            <div class="flex flex-col mt-20">
+            <div class="flex flex-col mt-20 px-4 md:px-0">
                 <h3 class="text-4xl font-bold">{{ post.title }}</h3>
-                <div class="mt-5 flex items-center justify-between">
+                <div
+                    class="mt-5 flex flex-col gap-2 md:flex-row items-center justify-between"
+                >
                     <div class="flex items-center">
                         <Avatar :username="post.user.name" />
 
