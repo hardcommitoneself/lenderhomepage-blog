@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Notifications\NewPostNotification;
 use Inertia\Inertia;
 use Faker\Factory as Faker;
 
@@ -48,6 +49,14 @@ class PostController extends Controller
             'content'=> $validatedRequest['content'],
             'image' => 'https://picsum.photos/seed/' . $faker->word() . '/360/240'
         ]);
+
+        // Get all followers of the author
+        $followers = auth()->user()->followers;
+
+        // Notify all followers asynchronously via queued notifications
+        foreach ($followers as $follower) {
+            $follower->notify(new NewPostNotification($post));
+        }
 
         return Redirect::route('posts.create');
     }
